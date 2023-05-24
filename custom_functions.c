@@ -96,16 +96,16 @@ char *_strcat(char *dest, const char *src)
  * execute_command - Execute a command
  * @command: The command to execute
  */
-void execute_command(const char *command)
+void execute_command(char *command)
 {
 	pid_t pid = fork();
 	int status;
 
 	if (pid == -1)
 	{
-		_puterror("fork");
+		perror("fork");
 		free(command);
-		return (1);
+		return;
 	}
 	else if (pid == 0)
 	{
