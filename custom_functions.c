@@ -90,7 +90,7 @@ char *_strcat(char *dest, const char *src)
 
 	*temp = '\0';
 
-	return(dest);
+	return (dest);
 }
 /**
  * execute_command - Execute a command
@@ -113,14 +113,15 @@ void execute_command(const char *command)
 		if (argv == NULL)
 		{
 			perror("malloc");
-			exit(98);
+			exit(EXIT_FAILURE);
 		}
 		argv[0] = _strdup(command);
 		argv[1] = NULL;
+
 		if (execve(command, argv, NULL) == -1)
 		{
-			perror("execve");
-			exit(98);
+			perror(argv[0]);
+			exit(EXIT_FAILURE);
 		}
 		free(argv[0]);
 		free(argv);
@@ -130,7 +131,7 @@ void execute_command(const char *command)
 		if (waitpid(pid, &status, 0) == -1)
 		{
 			perror("waitpid");
-			exit(98);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
