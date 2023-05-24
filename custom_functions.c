@@ -103,8 +103,9 @@ void execute_command(const char *command)
 
 	if (pid == -1)
 	{
-		perror("Error Child:");
-		exit(EXIT_SUCCESS);
+		_puterror("fork");
+		free(command);
+		return (1);
 	}
 	else if (pid == 0)
 	{
@@ -113,7 +114,7 @@ void execute_command(const char *command)
 		if (argv == NULL)
 		{
 			perror("malloc");
-			exit(EXIT_SUCCESS);
+			exit(EXIT_FAILURE);
 		}
 		argv[0] = _strdup(command);
 		argv[1] = NULL;
@@ -121,7 +122,7 @@ void execute_command(const char *command)
 		if (execve(command, argv, NULL) == -1)
 		{
 			perror(argv[0]);
-			exit(EXIT_SUCCESS);
+			exit(EXIT_FAILURE);
 		}
 		free(argv[0]);
 		free(argv);
@@ -131,7 +132,7 @@ void execute_command(const char *command)
 		if (waitpid(pid, &status, 0) == -1)
 		{
 			perror("waitpid");
-			exit(EXIT_SUCCESS);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
