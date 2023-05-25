@@ -48,5 +48,8 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 void *_memcpy(void *dest, const void *src, size_t n);
 void tokenization_error(char **tokens, char *str_copy, int token_count);
+void free_last_input(char **last_input);
+char *store_last_input(const char *input, ssize_t size);
+char *_strncpy(char *dest, const char *src, size_t n);
 
 #endif

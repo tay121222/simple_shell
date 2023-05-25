@@ -51,6 +51,36 @@ void empty_input(void)
 }
 
 /**
+ * non_interactive_mode - Executes program in non interative mode
+ */
+void non_interactive_mode(void)
+{
+	char buffer[BUFFER_SIZE];
+	ssize_t read_size;
+	char **tokens;
+	char *last_input = NULL;
+
+	while ((read_size = read_input(buffer)) > 0)
+	{
+		if (last_input != NULL)
+			free_last_input(&last_input);
+
+		last_input = store_last_input(buffer, read_size);
+
+		tokens = parse_input2(buffer);
+
+		if (_strcmp(buffer, "env") == 0)
+			execute_env();
+		else
+			execute_command(tokens);
+
+		free_args(tokens);
+	}
+
+	free_last_input(&last_input);
+}
+
+/**
  * main - Entry Point of the program
  * @argc: number of arguments
  * @argv: pointer to array of arguments
@@ -59,44 +89,48 @@ void empty_input(void)
  */
 int main(__attribute__((unused))int argc, char *argv[])
 {
-	const char *prompt = "#cisfun$ ";
+	const char *prompt = "$ ";
 	char buffer[BUFFER_SIZE];
 	ssize_t read_size;
 	char **tokens;
+	char *last_input = NULL;
 
 	program_name = argv[0];
-	while (1)
+	if (isatty(STDIN_FILENO))
 	{
-		if (isatty(STDIN_FILENO))
+		while (1)
 		{
 			print_prompt(prompt);
-		}
-		read_size = read_input(buffer);
-
-		if (read_size < 0)
-		{
-			perror("read");
-			exit(EXIT_FAILURE);
-		}
-		if (read_size == 1)
-			continue;
-
-		if (read_size == 0)
-		{
-			empty_input();
-			break;
-		}
-		buffer[read_size - 1] = '\0';
-		/* tokens = parse_input2(buffer); */
-		tokens = tokenize(buffer, TOKEN_DELIM);
-		if (_strcmp(buffer, "env") == 0)
-		{
-			execute_env();
+			read_size = read_input(buffer);
+			if (read_size < 0)
+			{
+				perror("read");
+				exit(EXIT_FAILURE);
+			}
+			if (read_size == 1)
+				continue;
+			if (read_size == 0)
+			{
+				empty_input();
+				break;
+			}
+			buffer[read_size - 1] = '\0';
+			/* tokens = parse_input2(buffer); */
+			tokens = tokenize(buffer, TOKEN_DELIM);
+			if (_strcmp(buffer, "env") == 0)
+			{
+				execute_env();
+				free_args(tokens);
+				continue;
+			}
+			execute_command(tokens);
 			free_args(tokens);
-			continue;
 		}
-		execute_command(tokens);
-		free_args(tokens);
 	}
+	else
+	{
+		non_interactive_mode();
+	}
+	free_last_input(&last_input);
 	return (EXIT_SUCCESS);
 }
