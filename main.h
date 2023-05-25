@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+char *program_name;
+
 void execute_command(char *command);
 size_t _strlen(const char *str);
 char *_strdup(const char *str);

@@ -121,7 +121,7 @@ void execute_command(char *command)
 
 		if (execve(command, argv, NULL) == -1)
 		{
-			perror(argv[0]);
+			perror(program_name);
 			exit(EXIT_FAILURE);
 		}
 		free(argv[0]);
