@@ -94,45 +94,33 @@ char *_strcat(char *dest, const char *src)
 }
 /**
  * execute_command - Execute a command
- * @command: The command to execute
+ * @tokens: tokenized user inputs
  */
-void execute_command(char *command)
+void execute_command(char **tokens)
 {
-	pid_t pid = fork();
+	char *full_path = NULL;
+	pid_t pid;
 	int status;
+	char *command = tokens[0];
 
+	if (_strcmp(command, "exit") == 0)
+	{
+		free_args(tokens);
+		exit(98);
+	}
+
+	pid = fork();
 	if (pid == -1)
 	{
-		perror("fork");
-		free(command);
-		return;
+		perror("Error Child:");
+		exit(98);
 	}
 	else if (pid == 0)
 	{
-		char **argv = malloc(sizeof(char *) * 2);
-
-		if (argv == NULL)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-		argv[0] = _strdup(command);
-		argv[1] = NULL;
-
-		if (execve(command, argv, NULL) == -1)
-		{
-			perror(program_name);
-			exit(EXIT_FAILURE);
-		}
-		free(argv[0]);
-		free(argv);
+		execute_child(tokens, command);
 	}
 	else
 	{
-		if (waitpid(pid, &status, 0) == -1)
-		{
-			perror("waitpid");
-			exit(EXIT_FAILURE);
-		}
+		execute_parent(tokens, pid, &status, &full_path);
 	}
 }
