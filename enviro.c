@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * mk_env - create a shell environment using the environment passed to main
  * @env: the environment to be passed to the main function
