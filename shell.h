@@ -33,15 +33,15 @@ typedef struct variables
 } vars_t;
 
 /**
- * struct builtins - struct for the builtin functions
- * @name: name of builtin command
- * @f: function for corresponding builtin
+ * struct predefined - struct for the builtin functions
+ * @name: name of built-in command
+ * @f: function for corresponding built-in
  */
-typedef struct builtins
+typedef struct predefined
 {
 	char *name;
 	void (*f)(vars_t *);
-} builtins_t;
+} predefined_t;
 
 char **make_env(char **env);
 void free_env(char **env);
