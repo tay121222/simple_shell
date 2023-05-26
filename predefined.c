@@ -1,5 +1,4 @@
 #include "shell.h"
- 
 /**
  * checkPredefineds - check if command is a built-in command
  * @vars: programme variables
@@ -16,7 +15,7 @@ void (*checkPredefineds(vars_t *vars))(vars_t *vars)
 		{NULL, NULL}
 	};
 
-	for (a = 0; check[a].f != NULL; a += 1 )
+	for (a = 0; check[a].f != NULL; a += 1)
 	{
 		if (_strcmpr(vars->av[0], check[a].name) == 0)
 			break;
