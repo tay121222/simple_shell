@@ -43,8 +43,8 @@ typedef struct predefined
 	void (*f)(vars_t *);
 } predefined_t;
 
-char **make_env(char **env);
-void free_env(char **env);
+char **mk_env(char **env);
+void fr_env(char **env);
 
 ssize_t _puts(char *str);
 char *_strdup(char *strtodup);
@@ -53,7 +53,7 @@ char *_strcat(char *strc1, char *strc2);
 unsigned int _strlen(char *str);
 
 char **tokenize(char *buffer, char *delimiter);
-char **_realloc(char **ptr, size_t *size);
+char **reAlloc(char **pointer, size_t *sze);
 char *new_strtok(char *str, const char *delim);
 
 void (*checkPredefineds(vars_t *vars))(vars_t *vars);
