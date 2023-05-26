@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * reAlloc - creates more space by reallocating pointer
  * @pointer: points to initial array
