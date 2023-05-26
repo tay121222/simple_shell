@@ -8,7 +8,7 @@ void (*checkPredefineds(vars_t *vars))(vars_t *vars)
 {
 	unsigned int a;
 	predefined_t check[] = {
-		{"exit", new_exit},
+		{"exit", n_exit},
 		{"env", _env},
 		{"setenv", new_setenv},
 		{"unsetenv", new_unsetenv},
@@ -26,11 +26,11 @@ void (*checkPredefineds(vars_t *vars))(vars_t *vars)
 }
 
 /**
- * new_exit - exit from the program
+ * n_exit - exit from the program
  * @vars: the variables
  * Return: mothing
  */
-void new_exit(vars_t *vars)
+void n_exit(vars_t *vars)
 {
 	int status;
 
@@ -40,7 +40,7 @@ void new_exit(vars_t *vars)
 		if (status == -1)
 		{
 			vars->status = 2;
-			print_error(vars, ": Illegal number: ");
+			print_error(vars, ": unaccepted number: ");
 			_puts2(vars->av[1]);
 			_puts2("\n");
 			free(vars->commands);
@@ -86,7 +86,7 @@ void new_setenv(vars_t *vars)
 
 	if (vars->av[1] == NULL || vars->av[2] == NULL)
 	{
-		print_error(vars, ": Incorrect number of arguments\n");
+		print_error(vars, ": Invalid no. of arguments\n");
 		vars->status = 2;
 		return;
 	}
@@ -125,14 +125,14 @@ void new_unsetenv(vars_t *vars)
 
 	if (vars->av[1] == NULL)
 	{
-		print_error(vars, ": Incorrect number of arguments\n");
+		print_error(vars, ": Invalid no. of arguments\n");
 		vars->status = 2;
 		return;
 	}
 	key = find_key(vars->env, vars->av[1]);
 	if (key == NULL)
 	{
-		print_error(vars, ": No variable to unset");
+		print_error(vars, ": unavailable variable to unset");
 		return;
 	}
 	for (a = 0; vars->env[a] != NULL; a += 1)
@@ -142,7 +142,7 @@ void new_unsetenv(vars_t *vars)
 	{
 		print_error(vars, NULL);
 		vars->status = 127;
-		new_exit(vars);
+		n_exit(vars);
 	}
 	for (a = 0; vars->env[a] != *key; a += 1)
 		newenv[a] = vars->env[a];

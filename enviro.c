@@ -16,7 +16,7 @@ char **mk_env(char **env)
 	nEnv = malloc(sizeof(char *) * (a + 1));
 	if (nEnv == NULL)
 	{
-		perror("Fatal Error");
+		perror("deadly Error");
 		exit(1);
 	}
 	for (a = 0; env[a] != NULL; a += 1)

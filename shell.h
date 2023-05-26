@@ -17,10 +17,9 @@
  * @av: command line arguments
  * @buffer: buffer of command
  * @env: environment variables
- * @count: count of commands entered
+ * @count: counts of commands entered
  * @argv: arguments at opening of shell
  * @status: exit status
- * @commands: for the commands
  */
 typedef struct variables
 {
@@ -55,10 +54,10 @@ unsigned int _strlen(char *str);
 
 char **tokenize(char *buffer, char *delimiter);
 char **reAlloc(char **pointer, size_t *sze);
-char *new_strtok(char *str, const char *delim);
+char *new_strtok(char *str, const char *delimitr);
 
 void (*checkPredefineds(vars_t *vars))(vars_t *vars);
-void new_exit(vars_t *vars);
+void n_exit(vars_t *vars);
 void _env(vars_t *vars);
 void new_setenv(vars_t *vars);
 void new_unsetenv(vars_t *vars);
@@ -68,14 +67,17 @@ char **find_key(char **env, char *key);
 char *add_value(char *key, char *value);
 int _atoi(char *str);
 
-void check_for_path(vars_t *vars);
-int path_execute(char *command, vars_t *vars);
-char *find_path(char **env);
-int execute_cwd(vars_t *vars);
-int check_for_dir(char *str);
+void chk_path(vars_t *vars);
+int path_exec(char *cmd, vars_t *vars);
+char *f_path(char **env);
+int exec_cwd(vars_t *vars);
+int chk_dir(char *str);
 
 void print_error(vars_t *vars, char *msg);
 void _puts2(char *str);
-char *_uitoa(unsigned int count);
+char *_uitoa(unsigned int counter);
+
+static void sig_handler(int u_uv)
+
 
 #endif /* _SHELL_H_ */
