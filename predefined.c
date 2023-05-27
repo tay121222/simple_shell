@@ -40,7 +40,7 @@ void n_exit(vars_t *vars)
 		if (status == -1)
 		{
 			vars->status = 2;
-			print_error(vars, ": unaccepted number: ");
+			print_error(vars, ": Illegal number: ");
 			_puts2(vars->av[1]);
 			_puts2("\n");
 			free(vars->commands);
