@@ -8,8 +8,14 @@
  */
 int path_exec(char *command, vars_t *vars)
 {
+<<<<<<< HEAD
 	pid_t child_pd;
+=======
+	pid_t child_pid;
+
+>>>>>>> 03e69cf8c6a20eb278fe9c6db61b7b09eb75452b
 	if (access(command, X_OK) == 0)
+
 	{
 		child_pd = fork();
 		if (child_pd == -1)
@@ -47,8 +53,14 @@ int path_exec(char *command, vars_t *vars)
 char *f_path(char **env)
 {
 	char *path = "PATH=";
+<<<<<<< HEAD
 	unsigned int a, b;
 	for (a = 0; env[a] != NULL; a += 1)
+=======
+	unsigned int i, j;
+
+	for (i = 0; env[i] != NULL; i++)
+>>>>>>> 03e69cf8c6a20eb278fe9c6db61b7b09eb75452b
 	{
 		for (b = 0; b < 5; b++)
 			if (path[b] != env[a][b])
@@ -161,8 +173,14 @@ int exec_cwd(vars_t *vars)
  */
 int chk_dir(char *str)
 {
+<<<<<<< HEAD
 	unsigned int a;
 	for (a = 0; str[a]; a += 1)
+=======
+	unsigned int i;
+
+	for (i = 0; str[i]; i++)
+>>>>>>> 03e69cf8c6a20eb278fe9c6db61b7b09eb75452b
 	{
 		if (str[a] == '/')
 			return (1);
