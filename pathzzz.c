@@ -1,20 +1,20 @@
 #include "shell.h"
 /**
- * path_execute - executes a command in the path
- * @command: full path to the command
+ * path_exec - carries out command on path
+ * @command: absolute path to command
  * @vars: pointer to struct of variables
  *
- * Return: 0 on succcess, 1 on failure
+ * Return: zero if succcessful/ one if failed
  */
-int path_execute(char *command, vars_t *vars)
+int path_exec(char *command, vars_t *vars)
 {
-	pid_t child_pid;
+	pid_t child_pd;
 	if (access(command, X_OK) == 0)
 	{
-		child_pid = fork();
-		if (child_pid == -1)
+		child_pd = fork();
+		if (child_pd == -1)
 			print_error(vars, NULL);
-		if (child_pid == 0)
+		if (child_pd == 0)
 		{
 			if (execve(command, vars->av, vars->env) == -1)
 				print_error(vars, NULL);
@@ -33,59 +33,59 @@ int path_execute(char *command, vars_t *vars)
 	}
 	else
 	{
-		print_error(vars, ": Permission denied\n");
+		print_error(vars, ": Denied Permission\n");
 		vars->status = 126;
 	}
 	return (0);
 }
 /**
- * find_path - finds the PATH variable
- * @env: array of environment variables
+ * f_path - searches for the path's variable
+ * @env: environment variable array
  *
- * Return: pointer to the node that contains the PATH, or NULL on failure
+ * Return: NULL if failed/ node pointer for path
  */
-char *find_path(char **env)
+char *f_path(char **env)
 {
 	char *path = "PATH=";
-	unsigned int i, j;
-	for (i = 0; env[i] != NULL; i++)
+	unsigned int a, b;
+	for (a = 0; env[a] != NULL; a += 1)
 	{
-		for (j = 0; j < 5; j++)
-			if (path[j] != env[i][j])
+		for (b = 0; b < 5; b++)
+			if (path[b] != env[a][b])
 				break;
-		if (j == 5)
+		if (b == 5)
 			break;
 	}
-	return (env[i]);
+	return (env[a]);
 }
 /**
- * check_for_path - checks if the command is in the PATH
- * @vars: variables
+ * chk_path - verifies if the command exists in PATH
+ * @vars: the variables
  *
- * Return: void
+ * Return: nothing
  */
-void check_for_path(vars_t *vars)
+void chk_path(vars_t *vars)
 {
 	char *path, *path_dup = NULL, *check = NULL;
-	unsigned int i = 0, r = 0;
+	unsigned int a = 0, r = 0;
 	char **path_tokens;
 	struct stat buf;
 
-	if (check_for_dir(vars->av[0]))
-		r = execute_cwd(vars);
+	if (chk_dir(vars->av[0]))
+		r = exec_cwd(vars);
 	else
 	{
-		path = find_path(vars->env);
+		path = f_path(vars->env);
 		if (path != NULL)
 		{
 			path_dup = _strdup(path + 5);
 			path_tokens = tokenize(path_dup, ":");
-			for (i = 0; path_tokens && path_tokens[i]; i++, free(check))
+			for (a = 0; path_tokens && path_tokens[a]; a += 1, free(check))
 			{
-				check = _strcat(path_tokens[i], vars->av[0]);
+				check = _strcat(path_tokens[a], vars->av[0]);
 				if (stat(check, &buf) == 0)
 				{
-					r = path_execute(check, vars);
+					r = path_exec(check, vars);
 					free(check);
 					break;
 				}
@@ -97,7 +97,7 @@ void check_for_path(vars_t *vars)
 				new_exit(vars);
 			}
 		}
-		if (path == NULL || path_tokens[i] == NULL)
+		if (path == NULL || path_tokens[a] == NULL)
 		{
 			print_error(vars, ": not found\n");
 			vars->status = 127;
@@ -108,24 +108,24 @@ void check_for_path(vars_t *vars)
 		new_exit(vars);
 }
 /**
- * execute_cwd - executes the command in the current working directory
- * @vars: pointer to struct of variables
+ * exec_cwd - runs command in working directory
+ * @vars: pointer for variable struct
  *
- * Return: 0 on success, 1 on failure
+ * Return: 0 if successful/ 1 if failed
  */
-int execute_cwd(vars_t *vars)
+int exec_cwd(vars_t *vars)
 {
-	pid_t child_pid;
+	pid_t child_pd;
 	struct stat buf;
 
 	if (stat(vars->av[0], &buf) == 0)
 	{
 		if (access(vars->av[0], X_OK) == 0)
 		{
-			child_pid = fork();
-			if (child_pid == -1)
+			child_pd = fork();
+			if (child_pd == -1)
 				print_error(vars, NULL);
-			if (child_pid == 0)
+			if (child_pd == 0)
 			{
 				if (execve(vars->av[0], vars->av, vars->env) == -1)
 					print_error(vars, NULL);
@@ -154,17 +154,17 @@ int execute_cwd(vars_t *vars)
 	return (0);
 }
 /**
- * check_for_dir - checks if the command is a part of a path
- * @str: command
+ * chk_dir - verifies if command is part of path
+ * @str: the command.
  *
- * Return: 1 on success, 0 on failure
+ * Return: 1 if successful/ 0 if failed
  */
-int check_for_dir(char *str)
+int chk_dir(char *str)
 {
-	unsigned int i;
-	for (i = 0; str[i]; i++)
+	unsigned int a;
+	for (a = 0; str[a]; a += 1)
 	{
-		if (str[i] == '/')
+		if (str[a] == '/')
 			return (1);
 	}
 	return (0);

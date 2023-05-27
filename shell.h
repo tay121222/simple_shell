@@ -77,7 +77,7 @@ void print_error(vars_t *vars, char *msg);
 void _puts2(char *str);
 char *_uitoa(unsigned int counter);
 
-static void sig_handler(int u_uv)
+static void sig_handler(int u_uv);
 
 
 #endif /* _SHELL_H_ */
