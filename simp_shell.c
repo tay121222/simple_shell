@@ -1,6 +1,5 @@
 #include "shell.h"
 
-unsigned int sig_flag;
 /**
  * sig_handler - handles ^C signal interupt
  * @u_uv: unused variable (required for signal function prototype)
@@ -9,7 +8,9 @@ unsigned int sig_flag;
  */
 static void sig_handler(int u_uv)
 {
+	unsigned int sig_flag = 0;
 	(void) u_uv;
+
 	if (sig_flag == 0)
 		_puts("\n$ ");
 	else
@@ -28,6 +29,7 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 {
 	size_t len_buffer = 0;
 	unsigned int is_pipe = 0, a;
+
 	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
 
 	vars.argv = argv;
@@ -38,10 +40,9 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 		is_pipe = 1;
 	if (is_pipe == 0)
 		_puts("$ ");
-	sig_flag = 0;
+
 	while (getline(&(vars.buffer), &len_buffer, stdin) != -1)
 	{
-		sig_flag = 1;
 		vars.count += 1;
 		vars.commands = tokenize(vars.buffer, ";");
 		for (a = 0; vars.commands && vars.commands[a] != NULL; a += 1)
@@ -54,7 +55,6 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 		}
 		free(vars.buffer);
 		free(vars.commands);
-		sig_flag = 0;
 		if (is_pipe == 0)
 			_puts("$ ");
 		vars.buffer = NULL;
