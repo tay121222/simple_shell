@@ -96,7 +96,7 @@ void chk_path(vars_t *vars)
 			if (path_tokens == NULL)
 			{
 				vars->status = 127;
-				new_exit(vars);
+				n_exit(vars);
 			}
 		}
 		if (path == NULL || path_tokens[a] == NULL)
@@ -107,7 +107,7 @@ void chk_path(vars_t *vars)
 		free(path_tokens);
 	}
 	if (r == 1)
-		new_exit(vars);
+		n_exit(vars);
 }
 /**
  * exec_cwd - runs command in working directory

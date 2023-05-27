@@ -26,7 +26,7 @@ char **tokenize(char *buffer, char *delimiter)
 		a += 1;
 		if (a == m_count)
 		{
-			tokens = _realloc(tokens, &m_count);
+			tokens = reAlloc(tokens, &m_count);
 			if (tokens == NULL)
 			{
 				perror("deadly Error");

@@ -11,7 +11,7 @@ char **reAlloc(char **pointer, size_t *sze)
 	char **new;
 	size_t q;
 
-	new = malloc(szeof(char *) * ((*sze) + 10));
+	new = malloc(sizeof(char *) * ((*sze) + 10));
 	if (new == NULL)
 	{
 		free(pointer);

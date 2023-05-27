@@ -29,7 +29,7 @@ void add_key(vars_t *vars)
 		free(vars->buffer);
 		free(vars->commands);
 		free(vars->av);
-		free_env(vars->env);
+		fr_env(vars->env);
 		free(newenv);
 		exit(127);
 	}

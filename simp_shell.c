@@ -1,4 +1,6 @@
 #include "shell.h"
+
+unsigned int sig_flag;
 /**
  * sig_handler - handles ^C signal interupt
  * @u_uv: unused variable (required for signal function prototype)
@@ -24,13 +26,12 @@ static void sig_handler(int u_uv)
  */
 int main(int argc __attribute__((unused)), char **argv, char **environment)
 {
-	unsigned int sig_flag;
 	size_t len_buffer = 0;
 	unsigned int is_pipe = 0, a;
 	vars_t vars = {NULL, NULL, NULL, 0, NULL, 0, NULL};
 
 	vars.argv = argv;
-	vars.env = make_env(environment);
+	vars.env = mk_env(environment);
 	signal(SIGINT, sig_handler);
 
 	if (!isatty(STDIN_FILENO))
@@ -47,8 +48,8 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 		{
 			vars.av = tokenize(vars.commands[a], "\n \t\r");
 			if (vars.av && vars.av[0])
-				if (check_for_builtins(&vars) == NULL)
-					check_for_path(&vars);
+				if (checkPredefineds(&vars) == NULL)
+					chk_path(&vars);
 			free(vars.av);
 		}
 		free(vars.buffer);
@@ -60,7 +61,7 @@ int main(int argc __attribute__((unused)), char **argv, char **environment)
 	}
 	if (is_pipe == 0)
 		_puts("\n");
-	free_env(vars.env);
+	fr_env(vars.env);
 	free(vars.buffer);
 	exit(vars.status);
 }

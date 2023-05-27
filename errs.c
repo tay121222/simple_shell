@@ -13,7 +13,7 @@ void print_error(vars_t *vars, char *mssg)
 
 	_puts2(vars->argv[0]);
 	_puts2(": ");
-	counter = _uitoa(vars->counter);
+	counter = _uitoa(vars->count);
 	_puts2(counter);
 	free(counter);
 	_puts2(": ");

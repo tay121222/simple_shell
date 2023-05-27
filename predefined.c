@@ -52,7 +52,7 @@ void n_exit(vars_t *vars)
 	free(vars->buffer);
 	free(vars->av);
 	free(vars->commands);
-	free_env(vars->env);
+	fr_env(vars->env);
 	exit(vars->status);
 }
 
@@ -102,7 +102,7 @@ void new_setenv(vars_t *vars)
 			free(vars->buffer);
 			free(vars->commands);
 			free(vars->av);
-			free_env(vars->env);
+			fr_env(vars->env);
 			exit(127);
 		}
 		free(*key);
